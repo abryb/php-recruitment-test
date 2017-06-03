@@ -1,4 +1,6 @@
 <?php
+require_once (__DIR__ . '/lib/CacheWarm.php');
+require_once (__DIR__ . '/lib/StaticHostnameResolver.php');
 
 use Silly\Application;
 use Snowdog\DevTest\Component\CommandRepository;
