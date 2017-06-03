@@ -27,6 +27,20 @@ class PageManager
         return $query->fetchAll(\PDO::FETCH_CLASS, Page::class);
     }
 
+    public function getAllByUser(User $user)
+    {
+        $userId = $user->getUserId();
+        /** @var \PDOStatement $query */
+        $query = $this->database->prepare(
+            'SELECT * FROM pages 
+                      WHERE website_id IN (SELECT website_id FROM websites WHERE user_id = :userId)
+                      ORDER BY last_visit DESC');
+        $query->bindParam(':userId', $userId, \PDO::PARAM_INT);
+        $query->execute();
+        return $query->fetchAll(\PDO::FETCH_CLASS, Page::class);
+    }
+
+
     public function create(Website $website, $url)
     {
         $websiteId = $website->getWebsiteId();
