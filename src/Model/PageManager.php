@@ -34,7 +34,8 @@ class PageManager
         $query = $this->database->prepare(
             'SELECT * FROM pages 
                       WHERE website_id IN (SELECT website_id FROM websites WHERE user_id = :userId)
-                      ORDER BY last_visit DESC');
+                      ORDER BY last_visit DESC'
+        );
         $query->bindParam(':userId', $userId, \PDO::PARAM_INT);
         $query->execute();
         return $query->fetchAll(\PDO::FETCH_CLASS, Page::class);

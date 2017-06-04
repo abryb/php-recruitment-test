@@ -14,6 +14,11 @@
 
     <!-- Custom styles for this template -->
     <link href="/css/style.css" rel="stylesheet">
+    <script
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <script src="/js/varnish.js"></script>
 </head>
 
 <body>
@@ -57,7 +62,11 @@
                     </tr>
                     <?php foreach ($this->getWebsites() as $website): /** @var \Snowdog\DevTest\Model\Website $website */ ?>
                         <tr>
-                            <td><input type="checkbox" <?= in_array($website->getWebsiteId(), $websiteIds) ? 'checked="checked"' : '' ?>/></td>
+                            <td>
+                                <input
+                                        type="checkbox" <?= in_array($website->getWebsiteId(), $websiteIds) ? 'checked="checked"' : '' ?>
+                                        data-website="<?= $website->getWebsiteId()?>"
+                                        data-varnish="<?= $varnish->getVarnishId()?>"/></td>
                             <td><?= $website->getName() ?></td>
                             <td><?= $website->getHostname() ?></td>
                         </tr>
@@ -69,7 +78,6 @@
     </div>
 
 </div><!-- /.container -->
-
 
 </body>
 </html>

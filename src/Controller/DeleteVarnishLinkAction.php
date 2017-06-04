@@ -4,9 +4,8 @@ namespace Snowdog\DevTest\Controller;
 
 use Snowdog\DevTest\Model\UserManager;
 use Snowdog\DevTest\Model\VarnishManager;
-use Snowdog\DevTest\Model\WebsiteManager;
 
-class CreateVarnishLinkAction
+class DeleteVarnishLinkAction
 {
     /**
      * @var UserManager
@@ -25,13 +24,14 @@ class CreateVarnishLinkAction
 
     public function execute()
     {
-        $varnishId = isset($_POST['varnish']) ? $_POST['varnish'] : null;
-        $websiteId = isset($_POST['website']) ? $_POST['website'] : null;
+        parse_str(file_get_contents("php://input"), $del_vars);
+        $varnishId = isset($del_vars['varnish']) ? $del_vars['varnish'] : null;
+        $websiteId = isset($del_vars['website']) ? $del_vars['website'] : null;
 
         $result = false;
         if (!empty($varnishId) && !empty($websiteId)) {
             if (isset($_SESSION['login'])) {
-                $result = $this->varnishManager->link($varnishId, $websiteId);
+                $result = $this->varnishManager->unlink($varnishId, $websiteId);
             }
         }
         echo json_encode($result);

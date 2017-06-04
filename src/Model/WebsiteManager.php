@@ -27,6 +27,16 @@ class WebsiteManager
         return $website;
     }
 
+    public function getByHostname($hostname)
+    {
+        /** @var \PDOStatement $query */
+        $query = $this->database->prepare('SELECT * FROM websites WHERE hostname = :hostname');
+        $query->bindParam(':hostname', $hostname, \PDO::PARAM_STR);
+        $query->execute();
+        return $query->fetchObject(Website::class);
+    }
+
+
     public function getAllByUser(User $user)
     {
         $userId = $user->getUserId();
@@ -41,7 +51,9 @@ class WebsiteManager
     {
         $userId = $user->getUserId();
         /** @var \PDOStatement $statement */
-        $statement = $this->database->prepare('INSERT INTO websites (name, hostname, user_id) VALUES (:name, :host, :user)');
+        $statement = $this->database->prepare(
+            'INSERT INTO websites (name, hostname, user_id) VALUES (:name, :host, :user)'
+        );
         $statement->bindParam(':name', $name, \PDO::PARAM_STR);
         $statement->bindParam(':host', $hostname, \PDO::PARAM_STR);
         $statement->bindParam(':user', $userId, \PDO::PARAM_INT);
